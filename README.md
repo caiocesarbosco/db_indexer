@@ -3,7 +3,7 @@ A Simple Key Value Database Indexer Sample
 
 Rocksdb has been chosen as our Low Level Database.
 
-Indexer insert each entry following an algorithm which sorts Key's lexically.
+Database insert each entry following an algorithm which sorts Key's lexically.
 
 Value is a Struct containing a String and a Number.
 
