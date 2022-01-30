@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use crate::data::Data;
 use std::cmp::Ordering;
 
-#[derive(Ord, Eq, Hash)]
+#[derive(Ord, Eq, Hash, Clone)]
 pub struct Key {
     key: Vec<u8>
 }
@@ -27,6 +27,7 @@ impl PartialOrd for Key {
     }
 }
 
+#[derive(Clone)]
 pub struct Entry<'a> {
     string_col: Data<'a>,
     num_col: Data<'a>
@@ -41,19 +42,25 @@ impl <'a>Entry<'a> {
     }
 }
 pub struct Indexer<'a> {
-    index: BTreeMap<Key, Entry<'a>>
+    index: BTreeMap<Key, Entry<'a>>,
+    str_col_indexer: BTreeMap<Data<'a>, Key>,
+    num_col_indexer: BTreeMap<Data<'a>, Key>
 }
 
 impl <'a>Indexer<'a> {
 
     pub fn new() -> Indexer<'a> {
         Indexer {
-            index: BTreeMap::new()
+            index: BTreeMap::new(),
+            str_col_indexer: BTreeMap::new(),
+            num_col_indexer: BTreeMap::new()
         }
     }
 
     pub fn entry(&mut self, key: Key, value: Entry<'a>) {
-        self.index.insert(key, value);
+        self.index.insert(key.clone(), value.clone());
+        self.str_col_indexer.insert(value.string_col, key.clone());
+        self.num_col_indexer.insert(value.num_col, key);
     }
 
 }

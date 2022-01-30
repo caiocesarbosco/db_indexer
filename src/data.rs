@@ -1,4 +1,6 @@
-#[derive(PartialEq, Debug)]
+use std::cmp::Ordering;
+
+#[derive(Ord, Eq, Debug, Clone)]
 pub enum Data <'a>{
     StringVal(&'a str),
     NumberVal(i64)
@@ -25,6 +27,23 @@ impl<'a> From<Data<'a>> for Vec<u8> {
         vec_data           
     }
 }
+
+impl <'a>PartialOrd for Data<'a> {
+    fn partial_cmp(&self, other: &Data<'a>) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl <'a>PartialEq for Data<'a> {
+    fn eq(&self, other: &Data<'a>) -> bool {
+        match (self, other) {
+            (&Data::NumberVal(ref a), &Data::NumberVal(ref b)) => a == b,
+            (&Data::StringVal(ref a), &Data::StringVal(ref b)) => a == b,
+            _ => false,
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
