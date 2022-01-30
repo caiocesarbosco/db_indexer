@@ -1,7 +1,8 @@
-use indexmap::IndexMap;
+use std::collections::BTreeMap;
 use crate::data::Data;
+use std::cmp::Ordering;
 
-#[derive(Eq, Hash)]
+#[derive(Ord, Eq, Hash)]
 pub struct Key {
     key: Vec<u8>
 }
@@ -20,6 +21,12 @@ impl PartialEq for Key {
     }
 }
 
+impl PartialOrd for Key {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.key.partial_cmp(&other.key)
+    }
+}
+
 pub struct Entry<'a> {
     string_col: Data<'a>,
     num_col: Data<'a>
@@ -34,14 +41,14 @@ impl <'a>Entry<'a> {
     }
 }
 pub struct Indexer<'a> {
-    index: IndexMap<Key, Entry<'a>>
+    index: BTreeMap<Key, Entry<'a>>
 }
 
 impl <'a>Indexer<'a> {
 
     pub fn new() -> Indexer<'a> {
         Indexer {
-            index: IndexMap::new()
+            index: BTreeMap::new()
         }
     }
 
