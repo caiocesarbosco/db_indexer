@@ -1,17 +1,17 @@
 #[derive(PartialEq, Debug)]
 pub enum Data <'a>{
-    StringCol(&'a str),
-    NumberCol(i64)
+    StringVal(&'a str),
+    NumberVal(i64)
 }
 
 impl<'a> Data<'a> {
 
     pub fn new_from_str(string_val: &'a str) -> Data {
-        Data::StringCol(string_val)
+        Data::StringVal(string_val)
     }
 
     pub fn new_from_number(number_val: i64) -> Data<'a> {
-        Data::NumberCol(number_val)
+        Data::NumberVal(number_val)
     }
 }
 
@@ -19,8 +19,8 @@ impl<'a> From<Data<'a>> for Vec<u8> {
     fn from(data: Data<'a>) -> Vec<u8> {
         let vec_data: Vec<u8>;
         match data {
-            Data::StringCol(str_data) => vec_data = str_data.as_bytes().to_vec(),
-            Data::NumberCol(number_data) => vec_data = number_data.to_be_bytes().to_vec(),
+            Data::StringVal(str_data) => vec_data = str_data.as_bytes().to_vec(),
+            Data::NumberVal(number_data) => vec_data = number_data.to_be_bytes().to_vec(),
         }
         vec_data           
     }
@@ -35,14 +35,14 @@ mod tests {
     fn test_string_data_creation() {
         let string_val: &str = "My String Test";
         let data = Data::new_from_str(string_val);
-        assert_eq!(data, Data::StringCol(string_val));
+        assert_eq!(data, Data::StringVal(string_val));
     }
 
     #[test]
     fn test_number_data_creation() {
         let number_val: i64 = 999;
         let data = Data::new_from_number(number_val);
-        assert_eq!(data, Data::NumberCol(number_val));
+        assert_eq!(data, Data::NumberVal(number_val));
     }
 
     #[test]
