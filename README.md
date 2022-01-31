@@ -14,3 +14,8 @@ Indexer must sort/filter DB by String or Number Field.
 The Indexer & DB resources are used by many threads.
 
 Fuzzing Test must cover as many different entries as possible.
+
+
+Run the Tests: 
+
+cargo test

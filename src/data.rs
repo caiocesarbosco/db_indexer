@@ -1,6 +1,9 @@
 use std::cmp::Ordering;
+use serde::{Serialize, Deserialize};
+use std::fmt::{Display, Result, Formatter};
 
-#[derive(Ord, Eq, Debug, Clone)]
+
+#[derive(Serialize, Deserialize, Ord, Eq, Debug, Clone)]
 pub enum Data <'a>{
     StringVal(&'a str),
     NumberVal(i64)
@@ -42,6 +45,17 @@ impl <'a>PartialEq for Data<'a> {
             _ => false,
         }
     }
+}
+
+impl <'a>Display for Data<'a> {
+
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match self {
+            &Data::NumberVal(ref a) => write!(f, "{}", a),
+            &Data::StringVal(ref a) => write!(f, "{:?}", a),
+        }
+    }
+
 }
 
 
